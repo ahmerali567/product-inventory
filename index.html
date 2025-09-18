@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Inventory System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 min-h-screen text-gray-900">
+
+  <header class="text-center py-8 text-white">
+    <h1 class="text-4xl font-extrabold tracking-wide drop-shadow-lg">📦 Product Inventory System</h1>
+    <p class="text-lg mt-2 opacity-90">Manage and view your products with ease</p>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-4">
+    <!-- Product Form -->
+    <section class="bg-white rounded-2xl shadow-xl p-6 mb-10">
+      <h2 class="text-2xl font-bold mb-4">➕ Add a Product</h2>
+      <form id="productForm" class="grid md:grid-cols-2 gap-4">
+        <input type="text" id="name" placeholder="Product Name" required class="p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-400">
+        <input type="number" id="price" placeholder="Price" required class="p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-400">
+        <select id="category" required class="p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-400">
+          <option value="" disabled selected>Choose Category</option>
+          <option value="Stationery">Stationery</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Grocery">Grocery</option>
+        </select>
+        <input type="text" id="extraField" placeholder="Warranty or Expiry Date" class="p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-400">
+
+        <button type="submit" class="md:col-span-2 bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-semibold mt-2 transition duration-300">Add Product</button>
+      </form>
+    </section>
+
+    <!-- Product List -->
+    <section>
+      <h2 class="text-2xl font-bold text-white mb-4">📋 Product Inventory</h2>
+      <div id="productList" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Product Cards will be injected here -->
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
