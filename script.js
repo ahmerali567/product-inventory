@@ -6,43 +6,47 @@ class Product {
     this.category = category;
     this.id = Date.now() + Math.random(); // unique ID
   }
-
   getDetails() {
     return `Product: ${this.name}, Category: ${this.category}, Price: $${this.price}`;
   }
 }
 
-// ✅ Subclass: ElectronicProduct
+// ✅ Subclasses
 class ElectronicProduct extends Product {
   constructor(name, price, warranty) {
     super(name, price, "Electronics");
     this.warranty = warranty;
   }
-
   getDetails() {
     return `${super.getDetails()}, Warranty: ${this.warranty}`;
   }
 }
 
-// ✅ Subclass: GroceryProduct
 class GroceryProduct extends Product {
   constructor(name, price, expiryDate) {
     super(name, price, "Grocery");
     this.expiryDate = expiryDate;
   }
-
   getDetails() {
     return `${super.getDetails()}, Expiry Date: ${this.expiryDate}`;
   }
 }
 
 // ========================
-// Product Handling
+// Elements
 // ========================
 const form = document.getElementById('productForm');
 const productList = document.getElementById('productList');
-let products = []; // 📝 Store all products
+const deleteAllBtn = document.getElementById('deleteAllBtn');
+const selectiveModeBtn = document.getElementById('selectiveModeBtn');
+const deleteSelectedBtn = document.getElementById('deleteSelectedBtn');
 
+let products = [];
+let selectiveMode = false;
+
+// ========================
+// Add Product
+// ========================
 form.addEventListener('submit', (e) => {
   e.preventDefault();
 
@@ -63,21 +67,47 @@ form.addEventListener('submit', (e) => {
 
   products.push(product);
   renderProducts();
-
   form.reset();
 });
 
 // ========================
-// UI Rendering Functions
+// Delete All
+// ========================
+deleteAllBtn.addEventListener('click', () => {
+  products = [];
+  renderProducts();
+});
+
+// ========================
+// Toggle Selective Mode
+// ========================
+selectiveModeBtn.addEventListener('click', () => {
+  selectiveMode = !selectiveMode;
+  deleteSelectedBtn.classList.toggle('hidden', !selectiveMode);
+  renderProducts();
+});
+
+// ========================
+// Delete Selected
+// ========================
+deleteSelectedBtn.addEventListener('click', () => {
+  const selectedIds = [...document.querySelectorAll('.select-checkbox:checked')].map(cb => cb.dataset.id);
+  products = products.filter(p => !selectedIds.includes(String(p.id)));
+  renderProducts();
+});
+
+// ========================
+// UI Rendering
 // ========================
 function renderProducts() {
-  productList.innerHTML = ""; // clear current display
+  productList.innerHTML = "";
 
   products.forEach(product => {
     const card = document.createElement('div');
     card.className = "product-card bg-white rounded-2xl p-5 shadow-lg relative";
 
     card.innerHTML = `
+      ${selectiveMode ? `<input type="checkbox" data-id="${product.id}" class="select-checkbox absolute top-3 left-3 w-5 h-5">` : ""}
       <button class="delete-btn absolute top-3 right-3 bg-red-500 hover:bg-red-600 text-white rounded-full w-7 h-7 flex items-center justify-center" data-id="${product.id}">
         ✕
       </button>
@@ -91,7 +121,7 @@ function renderProducts() {
     productList.appendChild(card);
   });
 
-  // Attach delete event
+  // attach individual delete events
   document.querySelectorAll(".delete-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       const id = btn.getAttribute("data-id");
